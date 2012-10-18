@@ -1,16 +1,26 @@
-## README##
+## README ##
 
-<strong>sublime-swap</strong> is a plug-in for the Sublime Text 2 text editor.  It swaps text selections for logical equivalents, such as:
+**sublime-swap** is a plug-in for the Sublime Text 2 text editor.  It swaps text selections for logical equivalents, such as:
 
-<em>width</em> becomes <em>height</em>
+*width* becomes *height*
 
-<em>left</em> becomes <em>right</em>
+*left* becomes *right*
 
-<em>true</em> becomes <em>false</em>
+*true* becomes *false*
 
 The plug-in also supports numbers:
 
-<em>-20</em> becomes <em>20</em>
-<em>50</em> becomes <em>-50</em>
+*-20* becomes *20*
+
+*50* becomes *-50*
+
+And tolerates numbers with CSS values:
+
+*-15px* becomes *15px*
+
+*45%* becomes *-45%*
+
+
+
 
 
