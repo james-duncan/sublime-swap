@@ -16,7 +16,7 @@ The Problem
 
 For those times when you're editing text by changing "left" to "right", or "top" to "bottom", and you think:
 
-* "It'd be nice if something just did this for me..." *
+*"It'd be nice if something just did this for me..."*
 
 Getting Started
 ===============
