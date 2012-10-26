@@ -1,15 +1,22 @@
 ================
-%(package_name)s
+Swap
 ================
 
-<main description>
+Designed for convenience, this package provides a command which will swap a recognised word for a related word.  For example:
 
+- true *becomes* false
+- top *becomes* bottom
 
+Swap can use more than two values as well:
+
+- left --> right --> center
+ 
 The Problem
 ===========
 
-<problem this package tries to solve>
+For those times when you're editing text by changing "left" to "right", or "top" to "bottom", and you think:
 
+* "It'd be nice if something just did this for me..." *
 
 Getting Started
 ===============

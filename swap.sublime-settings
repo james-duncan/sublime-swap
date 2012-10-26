@@ -11,7 +11,6 @@
 
     // Swap category defintions
     "dev-web": [
-        ["x", "y", "w", "h"],
         ["block", "inline-block", "inline", "none"],
         ["%", "cm", "em", "ex", "in", "mm", "pc", "pt", "px"],
         ["dashed", "dotted", "double", "groove", "inset", "outset", "ridge", "solid"],
