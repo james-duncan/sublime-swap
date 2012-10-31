@@ -9,26 +9,70 @@
 #
 # @author: James Warwood BSc - james.duncan.1991@googlemail.com
 # @date: October 2012
-
-
 import sublime, sublime_plugin, re
 
 settings = sublime.load_settings('swap.sublime-settings')
 
+
+def load_swaps():
+    swaps = []
+
+    print "fetching swaps"
+    # User settings
+    userSettings = sublime.load_settings('swap-user.sublime-settings')
+    userCategories = userSettings.get('enabled_categories')
+
+    # Default settings
+    defaultSettings = sublime.load_settings('swap-default.sublime-settings')
+    defaultCategories = defaultSettings.get('enabled_categories')
+
+    # if userCategories != None:
+    #     for u in userCategories:
+    #         print u
+
+    for d in defaultCategories:
+        currentSwaps = defaultSettings.get(d)
+        for cSwap in currentSwaps:
+
+            if swaps:
+
+                c = 0
+                exists = False
+
+                # Check if any of the target words exist in the array of swaps already
+                while c < len(swaps):
+                    if len(set(cSwap) & set(swaps[c])):
+                        exists = True
+
+                    c += 1
+
+                # Add the array if it has cleared validation
+                if not exists:
+                    swaps = swaps + [cSwap]
+
+            # First item
+            else:
+                swaps = swaps + currentSwaps
+
+    swap_cache = swaps
+    return swaps
+
 class swapCommand(sublime_plugin.TextCommand):
+    swap_cache = []
+
     def run(self, edit):
+
+        if not self.swap_cache:
+            swaps = load_swaps()
+            self.swap_cache = swaps
+        else:
+            swaps = self.swap_cache
+
         for region in self.view.sel():
             if not region.empty():
                 sublime.set_clipboard(self.view.substr(region))
 
                 selection = self.view.substr(region)
-
-                # List of swaps
-                swapCategories = settings.get('swaps')
-
-                swaps = []
-                for sc in swapCategories:
-                    swaps = swaps + settings.get(sc)
 
                 # Loop through array of swap arrays
                 for s in swaps:

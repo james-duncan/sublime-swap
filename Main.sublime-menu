@@ -17,8 +17,13 @@
                         [
                             {
                                 "command": "open_file",
-                                "args": {"file": "${packages}/Swap/swap.sublime-settings"},
-                                "caption": "Settings"
+                                "args": {"file": "${packages}/Swap/swap-default.sublime-settings"},
+                                "caption": "Settings – Default"
+                            },
+                            {
+                                "command": "open_file",
+                                "args": {"file": "${packages}/User/swap-user.sublime-settings"},
+                                "caption": "Settings – User"
                             }
                         ]
                     }

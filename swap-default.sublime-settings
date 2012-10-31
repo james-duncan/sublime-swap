@@ -1,20 +1,21 @@
 /*
-    Swap - settings
+    'swap-default.sublime-settings'
+
+    Swap - default settings
 */
 {
     // Deselect text after swapping
     "deselect": false,
 
     // Enabled swap categories
-    "swaps": ["dev-web", "dev-generic", "positions_locations_sizes", "tables", "actions"],
-
+    "enabled_categories": ["dev-web", "dev-generic", "positions_locations_sizes", "tables", "actions"],
 
     // Swap category defintions
     "dev-web": [
         ["block", "inline-block", "inline", "none"],
         ["%", "cm", "em", "ex", "in", "mm", "pc", "pt", "px"],
         ["dashed", "dotted", "double", "groove", "inset", "outset", "ridge", "solid"],
-        ["inner", "outer"]
+        ["inner", "outer", "block"]
     ],
     "dev-generic": [
         ["public", "private", "protected", "static"],
