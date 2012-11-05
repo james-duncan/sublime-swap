@@ -15,7 +15,8 @@
         ["block", "inline-block", "inline", "none"],
         ["%", "cm", "em", "ex", "in", "mm", "pc", "pt", "px"],
         ["dashed", "dotted", "double", "groove", "inset", "outset", "ridge", "solid"],
-        ["inner", "outer", "block"]
+        ["inner", "outer", "block"],
+        ["absolute", "relative", "fixed"]
     ],
     "dev-generic": [
         ["public", "private", "protected", "static"],
@@ -33,6 +34,8 @@
         ["row", "col"]
     ],
     "actions": [
-        ["show", "hide"]
+        ["show", "hide"],
+        ["add", "remove"],
+        ["start", "end"]
     ]
 }

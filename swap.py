@@ -11,62 +11,80 @@
 # @date: October 2012
 import sublime, sublime_plugin, re
 
-settings = sublime.load_settings('swap.sublime-settings')
+# Loads swaps from the "enabled_categories" list of the supplied settings object.
+#
+# @param settings    The settings to load swaps from (e.g.: default or user)
+# @param swaps       The current list of swaps (or an empty array if this is the first call to this method)
+#
+# @return    The original swaps array argument, with the addition of any new swaps from the supplied settings object
+def load_swaps(categories, settings):
 
-
-def load_swaps():
     swaps = []
 
-    print "fetching swaps"
+    if categories != None:
+
+        for s in settings:
+            for c in categories:
+                categorySwaps = s.get(c)
+
+                if categorySwaps != None:
+                    for curSwap in categorySwaps:
+
+                        if swaps:
+
+                            count = 0
+                            exists = False
+
+                            # Check if any of the target words exist in the array of swaps already
+                            while count < len(swaps):
+                                if len(set(curSwap) & set(swaps[count])):
+                                    exists = True
+
+                                count += 1
+
+                            # Add the array if it has cleared validation
+                            if not exists:
+                                swaps = swaps + [curSwap]
+
+                        # First item
+                        else:
+                            swaps = swaps + categorySwaps
+
+    return swaps
+
+def load_settings():
     # User settings
     userSettings = sublime.load_settings('swap-user.sublime-settings')
     userCategories = userSettings.get('enabled_categories')
 
     # Default settings
     defaultSettings = sublime.load_settings('swap-default.sublime-settings')
-    defaultCategories = defaultSettings.get('enabled_categories')
 
-    # if userCategories != None:
-    #     for u in userCategories:
-    #         print u
+    # Categories
+    categories = defaultSettings.get('enabled_categories')
 
-    for d in defaultCategories:
-        currentSwaps = defaultSettings.get(d)
-        for cSwap in currentSwaps:
+    if userCategories != None:
+        categories = list(set(categories) | set(userCategories))
 
-            if swaps:
+    print categories
 
-                c = 0
-                exists = False
+    swaps = load_swaps(categories, [userSettings, defaultSettings])
 
-                # Check if any of the target words exist in the array of swaps already
-                while c < len(swaps):
-                    if len(set(cSwap) & set(swaps[c])):
-                        exists = True
-
-                    c += 1
-
-                # Add the array if it has cleared validation
-                if not exists:
-                    swaps = swaps + [cSwap]
-
-            # First item
-            else:
-                swaps = swaps + currentSwaps
-
-    swap_cache = swaps
     return swaps
 
 class swapCommand(sublime_plugin.TextCommand):
+    # Cache
     swap_cache = []
 
     def run(self, edit):
 
         if not self.swap_cache:
-            swaps = load_swaps()
+            swaps = load_settings()
             self.swap_cache = swaps
+            print "Fetched swaps from disk"
         else:
             swaps = self.swap_cache
+            print "Used cached swaps"
 
         for region in self.view.sel():
             if not region.empty():
