@@ -81,10 +81,8 @@ class swapCommand(sublime_plugin.TextCommand):
         if not self.swap_cache:
             swaps = load_settings()
             self.swap_cache = swaps
-            print "Fetched swaps from disk"
         else:
             swaps = self.swap_cache
-            print "Used cached swaps"
 
         for region in self.view.sel():
             if not region.empty():
@@ -110,13 +108,12 @@ class swapCommand(sublime_plugin.TextCommand):
                         col = self.view.rowcol(self.view.sel()[0].begin())[1] + (len(replacement))
                         target = self.view.text_point(row, col)
 
-                        # Clear and add
-                        if settings.get('deselect') == True:
-                            self.view.sel().clear()
+                        # # Clear and add
+                        # @TODO fix this
+                        # if settings.get('deselect') == True:
+                        #     self.view.sel().clear()
 
                         self.view.sel().add(sublime.Region(target))
-                        return;
-
 
                 # Regex search for numbers like 50, -90, 30.32, -1.20px, -50%, 10em
                 # Swap -ive numbers for +ive
