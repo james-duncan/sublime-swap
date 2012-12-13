@@ -20,7 +20,6 @@ import sublime, sublime_plugin, re
 def load_swaps(categories, settings):
 
     swaps = []
-
     if categories != None:
 
         for s in settings:
@@ -65,8 +64,6 @@ def load_settings():
 
     if userCategories != None:
         categories = list(set(categories) | set(userCategories))
-
-    print categories
 
     swaps = load_swaps(categories, [userSettings, defaultSettings])
 

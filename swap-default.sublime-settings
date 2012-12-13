@@ -16,7 +16,8 @@
         ["%", "cm", "em", "ex", "in", "mm", "pc", "pt", "px"],
         ["dashed", "dotted", "double", "groove", "inset", "outset", "ridge", "solid"],
         ["inner", "outer", "block"],
-        ["absolute", "relative", "fixed"]
+        ["absolute", "relative", "fixed"],
+        ["hidden", "auto", "scroll"]
     ],
     "dev-generic": [
         ["public", "private", "protected", "static"],
