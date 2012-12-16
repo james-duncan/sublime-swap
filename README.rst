@@ -13,6 +13,8 @@ Swap can use more than two values as well:
 
 The plug-in comes with some default swaps, which are arranged by category.  Categories can be enabled and disabled by changing the config (Preferences -> Package Settings -> Swap).  It is recommended that you take a copy of the default settings and place these into the user settings file.  Do NOT make changes in the default settings files, as these changes will be overwritten and lost when the plug-in gets updated.
 
+This plug-in is available under a BSD license.  See "LICENSE.txt" for further details.
+
 The Problem
 ===========
 
