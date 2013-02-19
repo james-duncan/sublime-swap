@@ -7,11 +7,8 @@
     // Deselect text after swapping
     "deselect": false,
 
-    // Enabled swap categories
-    "enabled_categories": ["dev-web", "dev-generic", "positions_locations_sizes", "tables", "actions"],
-
     // Swap category defintions
-    "dev-web": [
+    "css": [
         ["block", "inline-block", "inline", "none"],
         ["%", "cm", "em", "ex", "in", "mm", "pc", "pt", "px"],
         ["dashed", "dotted", "double", "groove", "inset", "outset", "ridge", "solid"],
@@ -19,24 +16,14 @@
         ["absolute", "relative", "fixed"],
         ["hidden", "auto", "scroll"]
     ],
-    "dev-generic": [
+    "*": [
         ["public", "private", "protected", "static"],
         ["x", "y", "w", "h"],
         ["get", "set"],
-        ["true", "false"]
-    ],
-    "positions_locations_sizes": [
+        ["true", "false"],
         ["top", "bottom", "middle"],
         ["left", "right", "center"],
         ["width", "height"],
         ["min", "max"]
-    ],
-    "tables": [
-        ["row", "col"]
-    ],
-    "actions": [
-        ["show", "hide"],
-        ["add", "remove"],
-        ["start", "end"]
     ]
 }

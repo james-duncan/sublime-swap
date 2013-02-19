@@ -7,79 +7,93 @@
 # Also supports swapping numbers from positive to negative, allowing for
 # optional unit values px, em or % at the end of the number.
 #
-# @author: James Warwood BSc - james.duncan.1991@googlemail.com
+# @author: James Warwood - james.duncan.1991@googlemail.com
 # @date: October 2012
 import sublime, sublime_plugin, re
 
-# Loads swaps from the "enabled_categories" list of the supplied settings object.
-#
-# @param settings    The settings to load swaps from (e.g.: default or user)
-# @param swaps       The current list of swaps (or an empty array if this is the first call to this method)
-#
-# @return    The original swaps array argument, with the addition of any new swaps from the supplied settings object
-def load_swaps(categories, settings):
 
-    swaps = []
-    if categories != None:
-
-        for s in settings:
-            for c in categories:
-                categorySwaps = s.get(c)
-
-                if categorySwaps != None:
-                    for curSwap in categorySwaps:
-
-                        if swaps:
-
-                            count = 0
-                            exists = False
-
-                            # Check if any of the target words exist in the array of swaps already
-                            while count < len(swaps):
-                                if len(set(curSwap) & set(swaps[count])):
-                                    exists = True
-
-                                count += 1
-
-                            # Add the array if it has cleared validation
-                            if not exists:
-                                swaps = swaps + [curSwap]
-
-                        # First item
-                        else:
-                            swaps = swaps + categorySwaps
-
-    return swaps
-
-def load_settings():
-    # User settings
-    userSettings = sublime.load_settings('swap-user.sublime-settings')
-    userCategories = userSettings.get('enabled_categories')
-
-    # Default settings
-    defaultSettings = sublime.load_settings('swap-default.sublime-settings')
-
-    # Categories
-    categories = defaultSettings.get('enabled_categories')
-
-    if userCategories != None:
-        categories = list(set(categories) | set(userCategories))
-
-    swaps = load_swaps(categories, [userSettings, defaultSettings])
-
-    return swaps
 
 class swapCommand(sublime_plugin.TextCommand):
+
     # Cache
-    swap_cache = []
+    swap_cache = {}
+
+    # ...
+    #
+    # @param settings   An array of settings objects, in order of precedence
+    #
+    # @return
+    def load_swaps(self, allSettings, ext):
+
+        print ext
+
+        # Array of swaps
+        swaps = []
+
+
+        for settings in allSettings:
+            setting = settings.get(ext)
+
+            if setting != None:
+
+                # Each indivdual array of swaps
+                for swapArray in setting:
+
+                    if swaps:
+                        count = 0
+                        exists = False
+
+                        # Check if any of the target words exist in the array of swaps already
+                        while count < len(swaps):
+
+                            # Set dupe flag if already exists
+                            if len(set(swapArray) & set(swaps[count])):
+                                exists = True
+
+                            # Increment counter
+                            count += 1
+
+
+                        # Add the array if it has cleared validation
+                        if not exists:
+                            swaps = swaps + [swapArray]
+
+
+                    # First item
+                    else:
+                        swaps = swaps + [swapArray]
+
+        return swaps
+
+    def load_settings(self):
+        # User settings
+        userSettings = sublime.load_settings('swap-user.sublime-settings')
+
+        # Default settings
+        defaultSettings = sublime.load_settings('swap-default.sublime-settings')
+
+        return {
+            "user_settings": userSettings,
+            "default_settings": defaultSettings
+        }
 
     def run(self, edit):
 
-        if not self.swap_cache:
-            swaps = load_settings()
-            self.swap_cache = swaps
+        # File extension
+        file_name = self.view.file_name()
+        ext = file_name[file_name.rfind('.')+1:]
+
+        if not self.swap_cache.get(ext):
+
+            # Load user and default settings
+            settings = self.load_settings()
+
+            swaps = self.load_swaps([settings['user_settings'], settings['default_settings']], ext)
+
+            if swaps:
+                self.swap_cache[ext] = swaps
         else:
-            swaps = self.swap_cache
+            swaps = self.swap_cache[ext]
 
         for region in self.view.sel():
             if not region.empty():
@@ -111,20 +125,3 @@ class swapCommand(sublime_plugin.TextCommand):
                         #     self.view.sel().clear()
 
                         self.view.sel().add(sublime.Region(target))
-
-                # Regex search for numbers like 50, -90, 30.32, -1.20px, -50%, 10em
-                # Swap -ive numbers for +ive
-                # if re.search('^[-+]?[0-9]\d{0,2}(\.\d{1,2})?(%)|(px)|(em)?$', selection):
-                #     if (selection[:1] == "-"):
-                #         self.view.replace(edit, region, selection[1:])
-                #         col = self.view.rowcol(self.view.sel()[0].begin())[1] + (len(selection)-1)
-                #     else:
-                #         # Swap + sign for - sign
-                #         if (selection[:1] == "+"):
-                #             self.view.replace(edit, region, "-"+selection[1:])
-                #             col = self.view.rowcol(self.view.sel()[0].begin())[1] + len(selection)
-                #         else:
-                #             self.view.replace(edit, region, "-"+selection)
-                #             col = self.view.rowcol(self.view.sel()[0].begin())[1] + (len(selection)+1)
-
-
